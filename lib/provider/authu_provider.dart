@@ -15,7 +15,7 @@ class AuthuProvider extends ChangeNotifier{
 
   String? refershToken;
 
-  Future<bool> login(String email, String password)async{
+  Future<bool> login(String email,String password)async{
 
      isLoading = true;
      errorMessage = null;

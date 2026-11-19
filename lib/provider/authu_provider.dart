@@ -7,41 +7,29 @@ class AuthuProvider extends ChangeNotifier{
 
   AuthuProvider(this.apiservice);
 
-  bool isLoading = false;
+   bool isLoading = false;
 
-  String? errorMessage;
+   String? errorMessage ;
+     String? accessToken;
+    String? refreshToken;
 
-  String? accessToken;
+   Future<bool> Login(String email,String password)async{
+          isLoading = true;
+          errorMessage = null;
 
-  String? refershToken;
+          try{
 
-  Future<bool> login(String email,String password)async{
 
-     isLoading = true;
-     errorMessage = null;
+      final response = apiservice.login(email, password);
 
-     notifyListeners();
+             accessToken = response['access_token'];
+             refreshToken = response['refres_token']   ;
+              return true;
+               
+          }
 
-     try{
-      final response = await apiservice.login(email, password);
 
-      accessToken = response['acess_token'];
-      refershToken = response['refersh_token'];
-
-      return true;
-     }
-     catch(e){
-    
-    errorMessage = e.toString();
-    return false;
-
-     }finally{
-      isLoading = false;
-      notifyListeners();
-     }
-     
-
-  } 
+   }
 
 
 }

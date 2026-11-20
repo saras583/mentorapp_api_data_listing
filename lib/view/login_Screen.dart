@@ -10,57 +10,47 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-      
-      final emailController = TextEditingController();
-      final passController = TextEditingController();
 
-Future<void> handleLogin()async{
-   
-   final authuProvider = context.read<AuthuProvider>();
-     
+     final email = TextEditingController();
+     final password = TextEditingController();
 
-     final success =  await  authuProvider.login(emailController.text.trim(), passController.text.trim());
-     if(!mounted)return;
-     if(success){
-        Navigator.push(context, MaterialPageRoute(builder: (_)=> Scaffold(body: Center(child: Text('login successful'),),)));
-     }else{
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(authuProvider.errorMessage?? 'login fail')));
+     Future<void> handleLogin()async{
+         
+      final authuprovider =  context.read<AuthuProvider>();
+
+          final success = await authuprovider.Login(email.text.trim(), password.text.trim());
+
+          if(!mounted)return;
+
+          if(success){
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=> Center(child:  Text('login success'))));
+          }
+          else{
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(authuprovider.errorMessage?? 'login fail')));
+          }
+
      }
 
 
-}
-@override
-  void dispose() {
-    emailController.text.trim();
-    passController.text.trim();
-    super.dispose();
-    
-    
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(),
-         
-         body: SafeArea(child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(controller: emailController,
-              decoration: InputDecoration(
-                  hintText: 'email',
-                   
+      return  Scaffold(
+             appBar: AppBar(),
+             body: Consumer<AuthuProvider>(builder:(context,auth,child){
+              return Padding(padding: EdgeInsetsGeometry.all(20)
+                 , child: Column(
+                         children: [
 
-              ),
-
-            ),
-            SizedBox(height: 10,)
-
-            ,TextField(controller: passController,
-              decoration: InputDecoration(hintText: 'pass',),
-            ),
-            ElevatedButton(onPressed: handleLogin, child: Text('login'))
-          ],
-         )),
-    );
-  }
-}
+                          TextField(decoration: InputDecoration(hintText: 'login'),controller: email,),
+                                                    TextField(decoration: InputDecoration(hintText: 'login'),controller: password,),
+                           ElevatedButton(onPressed: auth.isLoading? null : handleLogin, child: Text('login'))
+                         ],
+                  ),
+              );
+             } ),
+        
+            
+      );
+    
+}}

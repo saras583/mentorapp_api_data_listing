@@ -5,8 +5,7 @@ class Apiservice {
   final Dio dio = Dio(
     BaseOptions(
       baseUrl: 'https://mentor-meter-backend.onrender.com/',
-      connectTimeout: Duration(milliseconds: 2),
-      receiveTimeout: Duration(microseconds: 2),
+      
       headers: {
         'Content-Type' : 'application/json'
       }

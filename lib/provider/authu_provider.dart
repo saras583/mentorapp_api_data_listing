@@ -9,23 +9,30 @@ class AuthuProvider extends ChangeNotifier{
 
    bool isLoading = false;
 
-   String? errorMessage ;
-     String? accessToken;
-    String? refreshToken;
+       String? errorMessage ;
+     
+        String? accessToken;
+        String? refreshToken;
 
-   Future<bool> Login(String email,String password)async{
+        Future<bool> Login(String email,String password)async{
           isLoading = true;
           errorMessage = null;
 
+          notifyListeners();
+
           try{
 
-
-      final response = apiservice.login(email, password);
+       final response = await apiservice.login(email, password);
 
              accessToken = response['access_token'];
-             refreshToken = response['refres_token']   ;
+             refreshToken = response['refres_token'];
               return true;
                
+          }catch(e){
+                
+                errorMessage= e.toString();
+                return false;
+
           }
 
 

@@ -13,7 +13,13 @@ class Apiservice {
     )
   );
 
+
+
+
+
   Future<Map<String,dynamic>> login( String email, String password)async{
+
+    
        
        final response = await dio.post('/api/auth/login',data :{ 'email': email,'password': password});
 
